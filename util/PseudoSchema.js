@@ -1,27 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// const mongoose = require('mongoose');
 
 const SchemaDataTypes = require('../const/SchemaDataTypes')
-
- const sampleCollectionSchema  = {
-    collection : {
-        required : true
-    },
-    fields :
-        {
-            id : Number,
-            name : String,
-        }
-}
-
-function convertSchema(schemaToCreate){
-    console.log("Collection name to create : ", schemaToCreate.collection)
-    const schema = monngoose.Schema({
-
-    }, {collection :schemaToCreate.collection})
-
-}
-
 
 /**
  *
@@ -42,4 +21,26 @@ const returnTypeFunction=(typeNameInString)=>{
         default : return String
 
     }
+    return  String
 }
+
+
+const sampleCollectionSchema  = {
+    collection : "sampleCollection",
+    fields :
+        {
+            _id : Number,
+            name : returnTypeFunction(SchemaDataTypes.STRING)
+        }
+}
+
+// function convertSchema(schemaToCreate){
+//     console.log("Collection name to create : ", schemaToCreate.collection)
+//     const schema = mongoose.Schema({
+//
+//     }, {collection :schemaToCreate.collection})
+//
+// }
+//
+
+module.exports={sampleCollectionSchema}

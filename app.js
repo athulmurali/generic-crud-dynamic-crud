@@ -9,6 +9,13 @@ var usersRouter = require('./routes/users');
 const apiRouter  = require('./routes/api')
 
 var app = express();
+const mongooseConnection = require('./data/MongooseConnector')()
+// mongooseConnection
+//     .then(console.log)
+//     .catch(console.error)
+
+const sampleSchema = require('./util/PseudoSchema').sampleCollectionSchema
+console.log(sampleSchema)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
