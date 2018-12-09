@@ -9,17 +9,27 @@ var usersRouter = require('./routes/users');
 const apiRouter  = require('./routes/api')
 
 var app = express();
+
+
+//loading models :
+
+
+
+
 const mongooseConnection = require('./data/MongooseConnector')()
 // mongooseConnection
 //     .then(console.log)
 //     .catch(console.error)
 
-const sampleSchema = require('./util/PseudoSchema').sampleCollectionSchema
-console.log(sampleSchema)
+const sampleSchema = require('./util/PseudoSchema')
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+
+
+const metCollectionModelLoaded = require('./data/MetaCollection').metaCollectionModel
+const dao =  require('./Dao/MetaCollection')
+
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
