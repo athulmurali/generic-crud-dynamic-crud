@@ -11,24 +11,12 @@ const apiRouter  = require('./routes/api')
 var app = express();
 
 
+
+require('./data/MongooseConnector')()
+
 //loading models :
-
-
-
-
-const mongooseConnection = require('./data/MongooseConnector')()
-// mongooseConnection
-//     .then(console.log)
-//     .catch(console.error)
-
-const sampleSchema = require('./util/PseudoSchema')
-
-
-
 const metCollectionModelLoaded = require('./data/MetaCollection').metaCollectionModel
 const dao =  require('./Dao/MetaCollection')
-
-
 
 
 app.use(logger('dev'));
@@ -55,7 +43,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   console.error(err)
-  res.render('error');
+  res.send({...err});
 });
 
 module.exports = app;

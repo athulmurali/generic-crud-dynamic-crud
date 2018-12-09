@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const SchemaDataTypes = require('../const/SchemaDataTypes')
+const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
 
 
 const sampleCollectionSchema  = {
@@ -11,11 +12,6 @@ const sampleCollectionSchema  = {
             name    :  SchemaDataTypes.STRING
         }
 }
-
-// const createCollection =()=>{
-//     mongoose.connection.db.createCollection(collection_name, (err) => {...});
-//
-// }
 /**
  *
  * @param typeNameInString
@@ -42,46 +38,42 @@ const returnTypeFunction=(typeNameInString)=>{
 }
 
 
-
 const convertStringInputCollectionToTyped=(inputCollection)=>
 {
-    console.log(inputCollection)
+    // console.log(inputCollection)
     const newDict = {}
     Object.keys(inputCollection).forEach((key)=> newDict[key] = returnTypeFunction(inputCollection[key]))
     return newDict
 }
 
+const convertSchema= (collectionName, untypedStringFieldsDict)=>
+    mongoose.Schema(convertStringInputCollectionToTyped({...untypedStringFieldsDict}), {collection :collectionName})
 
-function convertSchema(collectionName, untypedStringFieldsDict){
-    console.log("Collection name to create : ",collectionName)
-    console.log(untypedStringFieldsDict)
-
-
-    const schema = mongoose.Schema({
-
-        ...untypedStringFieldsDict
-
-
-    }, {collection :collectionName})
-
-    console.log(schema)
-
-    return schema
-
-}
 
 convertStringInputCollectionToTyped(sampleCollectionSchema)
-const exportedSchema = convertSchema(sampleCollectionSchema.collection, convertStringInputCollectionToTyped(sampleCollectionSchema.fields))
-
-const exportedModel = mongoose.model( sampleCollectionSchema.collection,exportedSchema)
 
 
-// exportedModel.create({name : 'test',_id: 23}).then(console.log).catch(console.log)
-// exportedModel.create({name : 'test',_id: 2345}).then(console.log).catch(console.log)
+const getSchemaByCollectionName= async (collectionName) => {
+    const collectionSchema = await  metaCollectionModel.findById(collectionName)
+    return collectionSchema.fields[0]
+}
+
+
+const getModelByCollectionName = async(collectionName)=>{
+
+    // await mongoose.disconnect()
+    // await mongoose.connect(process.env.DB_URL,{useNewUrlParser: true})
+    const schemaInDB = await getSchemaByCollectionName(collectionName)
+    const convertedSchema = convertSchema(collectionName, schemaInDB)
+    delete mongoose.connection.models[collectionName];
+
+    return new mongoose.model( collectionName, convertedSchema)
+}
 
 
 
-module.exports={sampleCollectionSchema}
+console.log("PseudoSchemaLoaded")
+module.exports={sampleCollectionSchema,getModelByCollectionName}
 
 
 
