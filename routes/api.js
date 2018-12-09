@@ -3,42 +3,52 @@ const router = express.Router();
 
 const TABLE_NAME = "tableName"
 
+const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
+const metaCollectionDao= require('../Dao/MetaCollection')
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    res.send('Hola! I  am a cool api');
+
+    metaCollectionModel.find().then(
+        metaCollections =>
+        {
+            console.log(metaCollections)
+            res.send(metaCollections);
+        }
+    )
+
+
 });
 
-//
-router.get('/:'+TABLE_NAME,(req,res,next)=>{
 
 
 
-    res.send('Checking if exists  :  tableName : ' + path);
+router.post('/',(req,res,next)=>{
+    const newOrOldTable = {...req.body}
+    console.log(newOrOldTable)
 
-})
-
-
-router.post('/:'+TABLE_NAME,(req,res,next)=>{
-
-    const path =req.params[TABLE_NAME]
-
-    const schem =  [1,2,4]
-
-    schem.map(val =>{
-        console.log(val)
-        return {[val] : String}
+    metaCollectionDao.createAndUpdate(newOrOldTable)
+        .then(createdOrUpdated=>{
+            console.log(createdOrUpdated)
+        res.send(createdOrUpdated)
     })
-    console.log(schem)
+        .catch(err =>{
+            console.error({Error : JSON.stringify(err)})
+            res.send({error : "error in creation"})
 
-    res.send('Checking if exists  :  tableName : ' + path);
+        })
+
+
 })
 
 
-router.put('/:'+TABLE_NAME,(req,res,next)=>{
-
-    const path =req.params[TABLE_NAME]
-    res.send('Checking if exists  :  tableName : ' + path);
-})
+// //
+// router.get('/:path'+TABLE_NAME,(req,res,next)=>{
+//
+// //return collections of that tables
+//
+//
+// })
 
 
 module.exports = router;

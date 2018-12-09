@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-const META_COLLECTION_NAME = 'META_COLLECTION'
+const META_COLLECTION_NAME = 'MetaCollection'
 
-const metaCollectionSchema = new mongoose.Schema({
+const metaCollectionSchema =  mongoose.Schema({
     _id : String,
-    fields : [mongoose.Types.Mixed]
+    fields : Array
 
-},{collection : META_COLLECTION_NAME })
+},{collection : META_COLLECTION_NAME , __v: { type: Number, select: false}})
 
 
 //lets have model and collection name as META_COLLECTION_NAME
