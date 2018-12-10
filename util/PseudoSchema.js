@@ -81,7 +81,6 @@ const getFieldTypeDict=(fieldWithValuesDict)=>{
     return fieldTypeDict
 }
 
-console.log("PseudoSchemaLoaded")
 module.exports={sampleCollectionSchema,getModelByCollectionName, getFieldTypeDict}
 
 

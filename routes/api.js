@@ -22,24 +22,36 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.post('/',(req,res,next)=>{
+router.post('/:collectionName',(req,res,next)=>{
     const newOrOldTable = {...req.body}
 
     console.log(newOrOldTable)
 
 
-    console.log(getFieldTypeDict(newOrOldTable))
+    const fieldTypeDict = getFieldTypeDict(newOrOldTable)
 
-    // metaCollectionDao.createAndUpdate(newOrOldTable)
-    //     .then(createdOrUpdated=>{
-    //         console.log(createdOrUpdated)
-    //     res.send(createdOrUpdated)
-    // })
-    //     .catch(err =>{
-    //         console.error({Error : JSON.stringify(err)})
-    //         res.send({error : "error in creation"})
-    //
-    //     })
+    const collectionName =  req.params.collectionName
+
+
+    const metaCollectionSchema = {
+        // the following id represents the name of the collection to be created.
+        _id: collectionName,
+        fields:{
+            ...fieldTypeDict
+        }
+    }
+
+
+    metaCollectionDao.createAndUpdate(metaCollectionSchema)
+        .then(createdOrUpdated=>{
+            console.log(createdOrUpdated)
+            res.send(createdOrUpdated)
+    })
+        .catch(err =>{
+            console.error({Error : JSON.stringify(err)})
+            res.send({error : "error in creation"})
+
+        })
 
 
 })
@@ -57,18 +69,18 @@ router.get('/:collectionName', function(req, res, next) {
 });
 
 /* Create document for  the given collection name  . */
-router.post('/:collectionName', function(req, res, next) {
-    const collectionName = req.params.collectionName
-    const documentToCreate = req.body
-
-    console.log(collectionName)
-    databaseSchema.createDocumentInCollection(
-        collectionName,{...documentToCreate})
-        .then(docs=>res.send(docs)).catch(err=>res.send({Error : err}))
-
-
-});
-
+// router.post('/:collectionName', function(req, res, next) {
+//     const collectionName = req.params.collectionName
+//     const documentToCreate = req.body
+//
+//     console.log(collectionName)
+//     databaseSchema.createDocumentInCollection(
+//         collectionName,{...documentToCreate})
+//         .then(docs=>res.send(docs)).catch(err=>res.send({Error : err}))
+//
+//
+// });
+//
 
 // DELETE
 // /api/{table}
