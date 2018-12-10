@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router({mergeParams : true});
 const databaseSchema = require("../Dao/Database")
 const mappingTableRouter = require("./mappingTableRouter")
+const getFieldTypeDict = require('../util/PseudoSchema').getFieldTypeDict
 
 const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
 const metaCollectionDao= require('../Dao/MetaCollection')
@@ -23,18 +24,22 @@ router.get('/', function(req, res, next) {
 
 router.post('/',(req,res,next)=>{
     const newOrOldTable = {...req.body}
+
     console.log(newOrOldTable)
 
-    metaCollectionDao.createAndUpdate(newOrOldTable)
-        .then(createdOrUpdated=>{
-            console.log(createdOrUpdated)
-        res.send(createdOrUpdated)
-    })
-        .catch(err =>{
-            console.error({Error : JSON.stringify(err)})
-            res.send({error : "error in creation"})
 
-        })
+    console.log(getFieldTypeDict(newOrOldTable))
+
+    // metaCollectionDao.createAndUpdate(newOrOldTable)
+    //     .then(createdOrUpdated=>{
+    //         console.log(createdOrUpdated)
+    //     res.send(createdOrUpdated)
+    // })
+    //     .catch(err =>{
+    //         console.error({Error : JSON.stringify(err)})
+    //         res.send({error : "error in creation"})
+    //
+    //     })
 
 
 })

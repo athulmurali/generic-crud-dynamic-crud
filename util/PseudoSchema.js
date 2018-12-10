@@ -71,9 +71,18 @@ const getModelByCollectionName = async(collectionName)=>{
 }
 
 
+//given a field with a value, the following function converts it into a dictionary of field and types
+const getFieldTypeDict=(fieldWithValuesDict)=>{
+
+    const fieldTypeDict ={}
+    Object.keys(fieldWithValuesDict).forEach(fieldName=>{
+        fieldTypeDict[fieldName] = typeof  fieldWithValuesDict[fieldName]
+    })
+    return fieldTypeDict
+}
 
 console.log("PseudoSchemaLoaded")
-module.exports={sampleCollectionSchema,getModelByCollectionName}
+module.exports={sampleCollectionSchema,getModelByCollectionName, getFieldTypeDict}
 
 
 

@@ -2,7 +2,7 @@ const pseudoSchema = require("../util/PseudoSchema")
 
 const getDocumentsById = (collectionName,_id)=>
      pseudoSchema.getModelByCollectionName(collectionName)
-        .then(model =>model.findById(_id).exec())
+        .then(model =>model.findById(_id))
 
 const deleteDocumentById = (collectionName,_id)=>
      pseudoSchema.getModelByCollectionName(collectionName)
@@ -10,7 +10,7 @@ const deleteDocumentById = (collectionName,_id)=>
 
 const getDocuments = (collectionName)=>
      pseudoSchema.getModelByCollectionName(collectionName)
-        .then(model =>model.find().exec())
+        .then(model =>model.find())
 
 
 const createDocumentInCollection = (collectionName,documentToCreate)=>
@@ -18,7 +18,7 @@ const createDocumentInCollection = (collectionName,documentToCreate)=>
         .then(model =>model.create({...documentToCreate}))
 
 const truncateCollection=(collectionName)=>pseudoSchema.getModelByCollectionName(collectionName)
-    .then(model =>model.deleteMany({}).exec())
+    .then(model =>model.deleteMany({}))
 
 
 module.exports={getDocuments,createDocumentInCollection,truncateCollection,getDocumentsById,
