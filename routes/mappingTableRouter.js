@@ -1,7 +1,6 @@
 
 const express = require('express');
 const router = express.Router({mergeParams : true});
-const getMappingTableName = require('../util/MappingTable')
 const mappingTableDao = require('../Dao/MappingTable')
 
 
@@ -10,7 +9,31 @@ const mappingTableDao = require('../Dao/MappingTable')
 // Retrieves records from {table2} whose primary key {table2}.id = {table1}_{table2}.{table2} AND {table1}.{id} = {table1}_{table2}.{table1}. Returns empty array if tables or IDs don't exist
 
 /* GET document  from the given collection name by ID  . */
-router.get('/:collectionName2/:_id2', function(req, res, next) {
+router.get('/:collectionName2', function(req, res, next) {
+    const collectionName1 = req.params.collectionName1
+    const collectionName2 = req.params.collectionName2
+
+    const _id1 = req.params._id1
+
+    if (collectionName1 == collectionName2)
+    {
+        res.status(403)
+        res.send({ Error :   "Collection names cannot be same"})
+        return
+    }
+
+    mappingTableDao.getAllMapping(collectionName1, collectionName2, _id1)
+        .then(docs=>res.send(docs))
+});
+
+
+
+//
+// Retrieves records from {table2} whose primary key
+// {table2}.id = {table1}_{table2}.{table2} AND {table1}.{id} = {table1}_{table2}.{table1}.
+// Returns empty array if tables or IDs don't exist
+/* GET document  from the given collection name by ID  . */
+router.get('/:collectionName2', function(req, res, next) {
     const collectionName1 = req.params.collectionName1
     const collectionName2 = req.params.collectionName2
 
@@ -25,15 +48,12 @@ router.get('/:collectionName2/:_id2', function(req, res, next) {
     }
 
     mappingTableDao.getAllMapping(collectionName1, collectionName2)
-        .then(docs=>res.send(docs))
+    .then(docs=>res.send(docs))
+
+
+
 });
 
-
-
-//
-// Retrieves records from {table2} whose primary key
-// {table2}.id = {table1}_{table2}.{table2} AND {table1}.{id} = {table1}_{table2}.{table1}.
-// Returns empty array if tables or IDs don't exist
 
 
 
@@ -47,8 +67,6 @@ router.get('/:collectionName2/:_id2', function(req, res, next) {
 // referring to {table1}.id and {table2} referring to {table2}.id.
 //
 //
-
-
 router.post('/:collectionName2/:_id2', function(req, res, next) {
     const collectionName1 = req.params.collectionName1
     const collectionName2 = req.params.collectionName2
@@ -70,5 +88,66 @@ router.post('/:collectionName2/:_id2', function(req, res, next) {
 
 
 
+
+//
+// Removes record from {table1}_{table2}
+// where {table1} and {table2} foreign keys are {id1} and {id2}.
+// Records are not removed from {table1} and {table2}.
+
+router.delete('/:collectionName2/:_id2', function(req, res, next) {
+    const collectionName1 = req.params.collectionName1
+    const collectionName2 = req.params.collectionName2
+
+    console.log("deleting.....")
+
+    const _id1 = parseInt(req.params._id1)
+    const _id2 = parseInt(req.params._id2)
+
+    if (collectionName1 == collectionName2)
+    {
+        res.status(403)
+        res.send({ Error :   "Collection names cannot be same"})
+        return
+    }
+
+    mappingTableDao
+        .deleteMappingByBothCollectionId(collectionName1, collectionName2,_id1,_id2)
+        .then(doc=>res.send(doc))
+        .catch(err=>{
+            res.status(403)
+            res.send(err)
+
+    })
+});
+
+
+// Removes all records from {table1}_{table2}
+// where {table1} foreign key is {id1}.
+// Records are not removed from {table1} or {table2}
+
+router.delete('/:collectionName2', function(req, res, next) {
+    const collectionName1 = req.params.collectionName1
+    const collectionName2 = req.params.collectionName2
+
+    console.log("deleting.....")
+
+
+    const _id1 = parseInt(req.params._id1)
+
+    if (collectionName1 == collectionName2)
+    {
+        res.status(403)
+        res.send({ Error :   "Collection names cannot be same"})
+        return
+    }
+    mappingTableDao
+        .deleteMappingByCollectionId(collectionName1, collectionName2,_id1)
+        .then(doc=>res.send(doc))
+        .catch(err=>{
+            res.status(403)
+            res.send(err)
+
+        })
+});
 
 module.exports=router

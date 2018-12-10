@@ -48,7 +48,7 @@ router.get('/:collectionName', function(req, res, next) {
 
     databaseSchema.getDocuments(collectionName)
         .then(docs=>res.send(docs))
-        .catch(err=>res.send({Error : JSON.stringify(err)}))
+        .catch(err=>res.send({}))
 });
 
 /* Create document for  the given collection name  . */
@@ -56,6 +56,7 @@ router.post('/:collectionName', function(req, res, next) {
     const collectionName = req.params.collectionName
     const documentToCreate = req.body
 
+    console.log(collectionName)
     databaseSchema.createDocumentInCollection(
         collectionName,{...documentToCreate})
         .then(docs=>res.send(docs)).catch(err=>res.send({Error : err}))

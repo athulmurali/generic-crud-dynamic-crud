@@ -61,12 +61,12 @@ const getSchemaByCollectionName= async (collectionName) => {
 
 const getModelByCollectionName = async(collectionName)=>{
 
+
     // await mongoose.disconnect()
     // await mongoose.connect(process.env.DB_URL,{useNewUrlParser: true})
     const schemaInDB = await getSchemaByCollectionName(collectionName)
     const convertedSchema = convertSchema(collectionName, schemaInDB)
     delete mongoose.connection.models[collectionName];
-
     return new mongoose.model( collectionName, convertedSchema)
 }
 
