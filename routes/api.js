@@ -23,15 +23,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/:collectionName',(req,res,next)=>{
-    const newOrOldTable = {...req.body}
+    const docToInsert = {...req.body}
 
-    console.log(newOrOldTable)
+    console.log(docToInsert)
 
-
-    const fieldTypeDict = getFieldTypeDict(newOrOldTable)
-
+    const fieldTypeDict = getFieldTypeDict(docToInsert)
     const collectionName =  req.params.collectionName
-
 
     const metaCollectionSchema = {
         // the following id represents the name of the collection to be created.
@@ -41,12 +38,13 @@ router.post('/:collectionName',(req,res,next)=>{
         }
     }
 
-
     metaCollectionDao.createAndUpdate(metaCollectionSchema)
-        .then(createdOrUpdated=>{
-            console.log(createdOrUpdated)
-            res.send(createdOrUpdated)
+        .then(newMetaCollectionDoc=>{
+            console.info("result from MetaCollection")
+            console.debug(newMetaCollectionDoc)
+            return databaseSchema.createDocumentInCollection(collectionName,docToInsert)
     })
+        .then((insertedDoc)=>res.send(insertedDoc))
         .catch(err =>{
             console.error({Error : JSON.stringify(err)})
             res.send({error : "error in creation"})
