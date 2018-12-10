@@ -1,13 +1,11 @@
 
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams : true});
 const databaseSchema = require("../Dao/Database")
-
-const TABLE_NAME = "tableName"
+const mappingTableRouter = require("./mappingTableRouter")
 
 const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
 const metaCollectionDao= require('../Dao/MetaCollection')
-
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -40,6 +38,8 @@ router.post('/',(req,res,next)=>{
 
 
 })
+
+
 
 
 /* GET all documents from the given collection name  . */
@@ -103,6 +103,6 @@ router.delete('/:collectionName/:_id', function(req, res, next) {
 
 
 
-
+router.use('/:collectionName1/:_id1',mappingTableRouter)
 
 module.exports = router;
