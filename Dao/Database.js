@@ -17,14 +17,26 @@ const createDocumentInCollection = (collectionName,documentToCreate)=>
     pseudoSchema.getModelByCollectionName(collectionName)
         .then(model =>model.create({...documentToCreate}))
 
-const updateIfExists = (collectionName, doc)=>
-    pseudoSchema.getModelByCollectionName(collectionName).
-    then(model => model.findOneAndUpdate({...doc},{returnNewDocument :true}))
+const updateIfExists = (collectionName, doc)=>{
+
+    console.log(doc)
+    console.log(collectionName)
+    return pseudoSchema.getModelByCollectionName(collectionName).
+    then(model =>{
+        return model.findOneAndUpdate({_id: doc._id}, {$set:{...doc}}, {new: true})
+    })
 
 
 
-const truncateCollection=(collectionName)=>pseudoSchema.getModelByCollectionName(collectionName)
-    .then(model =>model.deleteMany({}))
+}
+
+
+const truncateCollection=(collectionName)=>
+    pseudoSchema.getModelByCollectionName(collectionName)
+    .then(model =>{
+        console.log(model)
+        return model.deleteMany({})
+    })
 
 
 module.exports={getDocuments,createDocumentInCollection,truncateCollection,getDocumentsById,

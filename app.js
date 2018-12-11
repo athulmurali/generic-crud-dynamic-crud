@@ -4,19 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
 const apiRouter  = require('./routes/api')
 
 var app = express();
 
-
-
 require('./data/MongooseConnector')()
 
-//loading models :
-// const metCollectionModelLoaded = require('./data/MetaCollection').metaCollectionModel
-// const dao =  require('./Dao/MetaCollection')
-//
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -24,8 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// const indexApp = app.use('/', indexRouter);
-// const usersApp= app.use('/users', usersRouter);
+
 app.use("/api",apiRouter)
 
 // catch 404 and forward to error handler
