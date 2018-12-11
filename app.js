@@ -4,8 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+
 const apiRouter  = require('./routes/api')
 
 var app = express();
@@ -15,9 +14,9 @@ var app = express();
 require('./data/MongooseConnector')()
 
 //loading models :
-const metCollectionModelLoaded = require('./data/MetaCollection').metaCollectionModel
-const dao =  require('./Dao/MetaCollection')
-
+// const metCollectionModelLoaded = require('./data/MetaCollection').metaCollectionModel
+// const dao =  require('./Dao/MetaCollection')
+//
 
 app.use(logger('dev'));
 app.use(express.json());

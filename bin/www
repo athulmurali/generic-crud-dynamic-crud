@@ -4,6 +4,12 @@
  * Module dependencies.
  */
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').load();
+}
+process.env.DB_URL="mongodb://ghost:abcd1234@ds129454.mlab.com:29454/dynamic-db"
+
+
 var app = require('../app');
 var debug = require('debug')('generic-crud-dynamic-db:server');
 var http = require('http');

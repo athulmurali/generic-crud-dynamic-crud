@@ -1,14 +1,15 @@
-
 const express = require('express');
 const router = express.Router({mergeParams : true});
 const databaseSchema = require("../Dao/Database")
 const mappingTableRouter = require("./mappingTableRouter")
 const getFieldTypeDict = require('../util/PseudoSchema').getFieldTypeDict
+const queryFilter= require("./middlewares/Filter").queryFilter;
+
 
 const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
 const metaCollectionDao= require('../Dao/MetaCollection')
 
-/* GET users listing. */
+/* GET All meteCollection Schemas  listing. */
 router.get('/', function(req, res, next) {
 
     metaCollectionModel.find().then(
@@ -24,9 +25,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/:collectionName',(req,res,next)=>{
     const docToInsert = {...req.body}
-
-    console.log(docToInsert)
-
     const fieldTypeDict = getFieldTypeDict(docToInsert)
     const collectionName =  req.params.collectionName
 
@@ -50,35 +48,25 @@ router.post('/:collectionName',(req,res,next)=>{
             res.send({error : "error in creation"})
 
         })
-
-
 })
 
 
 
 
 /* GET all documents from the given collection name  . */
-router.get('/:collectionName', function(req, res, next) {
+// queryFilter sends filter data to the client
+router.get('/:collectionName',  (req, res, next) =>{
     const collectionName = req.params.collectionName
 
     databaseSchema.getDocuments(collectionName)
-        .then(docs=>res.send(docs))
-        .catch(err=>res.send({}))
-});
+        .then(docs=>{
+            console.log(docs    )
+            req.modelArray =  docs
+            return next()
+        })
+        .catch(err=>res.send(err))
+}, queryFilter);
 
-/* Create document for  the given collection name  . */
-// router.post('/:collectionName', function(req, res, next) {
-//     const collectionName = req.params.collectionName
-//     const documentToCreate = req.body
-//
-//     console.log(collectionName)
-//     databaseSchema.createDocumentInCollection(
-//         collectionName,{...documentToCreate})
-//         .then(docs=>res.send(docs)).catch(err=>res.send({Error : err}))
-//
-//
-// });
-//
 
 // DELETE
 // /api/{table}
@@ -92,7 +80,6 @@ router.delete('/:collectionName', function(req, res, next) {
 
 
 });
-
 
 
 /* GET document  from the given collection name by ID  . */
@@ -114,9 +101,6 @@ router.delete('/:collectionName/:_id', function(req, res, next) {
         .then(doc=>res.send(doc))
         .catch(err=>res.send({Error : JSON.stringify(err)}))
 });
-
-
-
 
 
 router.use('/:collectionName1/:_id1',mappingTableRouter)
