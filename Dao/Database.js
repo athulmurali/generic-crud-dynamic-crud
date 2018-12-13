@@ -12,6 +12,10 @@ const getDocuments = (collectionName)=>
      pseudoSchema.getModelByCollectionName(collectionName)
         .then(model =>model.find())
 
+const getDocumentsList = (collectionName, idList)=>
+    pseudoSchema.getModelByCollectionName(collectionName)
+        .then(model =>model.find(  {'_id': { $in: [...idList]}}))
+
 
 const createDocumentInCollection = (collectionName,documentToCreate)=>
     pseudoSchema.getModelByCollectionName(collectionName)
@@ -40,4 +44,4 @@ const truncateCollection=(collectionName)=>
 
 
 module.exports={getDocuments,createDocumentInCollection,truncateCollection,getDocumentsById,
-    deleteDocumentById,updateIfExists}
+    deleteDocumentById,updateIfExists,getDocumentsList}

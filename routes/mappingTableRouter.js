@@ -2,30 +2,7 @@
 const express = require('express');
 const router = express.Router({mergeParams : true});
 const mappingTableDao = require('../Dao/MappingTable')
-
-
-// GET
-// /api/{table1}/{id}/{table2}
-// Retrieves records from {table2} whose primary key {table2}.id = {table1}_{table2}.{table2} AND {table1}.{id} = {table1}_{table2}.{table1}. Returns empty array if tables or IDs don't exist
-
-/* GET document  from the given collection name by ID  . */
-router.get('/:collectionName2', function(req, res, next) {
-    const collectionName1 = req.params.collectionName1
-    const collectionName2 = req.params.collectionName2
-
-    const _id1 = req.params._id1
-
-    if (collectionName1 == collectionName2)
-    {
-        res.status(403)
-        res.send({ Error :   "Collection names cannot be same"})
-        return
-    }
-
-    mappingTableDao.getAllMapping(collectionName1, collectionName2, _id1)
-        .then(docs=>res.send(docs))
-});
-
+const pseudoSchema = require("../util/PseudoSchema")
 
 
 //
@@ -33,28 +10,47 @@ router.get('/:collectionName2', function(req, res, next) {
 // {table2}.id = {table1}_{table2}.{table2} AND {table1}.{id} = {table1}_{table2}.{table1}.
 // Returns empty array if tables or IDs don't exist
 /* GET document  from the given collection name by ID  . */
-router.get('/:collectionName2', function(req, res, next) {
-    const collectionName1 = req.params.collectionName1
-    const collectionName2 = req.params.collectionName2
+router.get('/:collectionName2', async function (req, res, next) {
 
-    const _id1 = req.params._id1
-    const _id2 = req.params._id2
 
-    if (collectionName1 == collectionName2)
-    {
-        res.status(403)
-        res.send({ Error :   "Collection names cannot be same"})
-        return
+    try{
+        const collectionName1 = req.params.collectionName1
+        const collectionName2 = req.params.collectionName2
+
+        const _id1 = req.params._id1
+        const _id2 = req.params._id2
+
+        if (collectionName1== collectionName2)
+
+        {
+            res.status(403)
+            res.send({Error: "Collection names cannot be same"})
+            return
+        }
+
+
+        const actorModel = await pseudoSchema.getModelByCollectionName(collectionName2)
+
+        // const docsList = await  databaseSchema.getDocumentsList(collectionName2,[1234])
+
+        const docs = await  mappingTableDao.getAllMapping(collectionName1, collectionName2, _id1)
+        const output =[]
+        docs.forEach(doc=>output.push(doc[collectionName2]))
+        console.log(output)
+        res.send(output)
+
+
     }
 
-    mappingTableDao.getAllMapping(collectionName1, collectionName2)
-    .then(docs=>res.send(docs))
+    catch(err){
+        console.log(err)
+        res.status(403)
+        res.send(err)
+    }
 
 
 
 });
-
-
 
 
 //
@@ -84,8 +80,6 @@ router.post('/:collectionName2/:_id2', function(req, res, next) {
     mappingTableDao.createMapping(collectionName1, collectionName2,_id1,_id2)
         .then(doc=>res.send(doc))
 });
-
-
 
 
 
@@ -119,8 +113,6 @@ router.delete('/:collectionName2/:_id2', function(req, res, next) {
 
     })
 });
-
-
 // Removes all records from {table1}_{table2}
 // where {table1} foreign key is {id1}.
 // Records are not removed from {table1} or {table2}
@@ -149,5 +141,6 @@ router.delete('/:collectionName2', function(req, res, next) {
 
         })
 });
+
 
 module.exports=router

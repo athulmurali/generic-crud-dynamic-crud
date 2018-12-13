@@ -1,18 +1,5 @@
-const mongoose = require('mongoose')
-
-
-
-// const sendResOnNoCollection=(req, res,next )=>{
-//     console.info("Passing through queryFilter: --------")
-//
-//     console.log("query strings : ")
-//     console.log(req.query)
-//
-//     }
-
 
 const filterElement=( queryDict,valueDict)=>{
-    console.log("filterElement---")
     const defaultReturn = true;
 
     for (let i in Object.keys(queryDict))
@@ -32,6 +19,8 @@ const queryFilter=(req, res,next )=>{
     const data = req.modelArray
     console.log(data)
 
+    console.log("Query type : ")
+    console.log(req.query.type)
     const queryDict = req.query
 
     const filteredDataArray= data.filter(valueDict => {
@@ -47,6 +36,5 @@ const queryFilter=(req, res,next )=>{
 
 }
 //
-
 
 module.exports={queryFilter}

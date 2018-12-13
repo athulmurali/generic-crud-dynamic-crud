@@ -10,6 +10,59 @@ const queryFilter= require("./middlewares/Filter").queryFilter;
 const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
 const metaCollectionDao= require('../Dao/MetaCollection')
 
+
+
+const validateCollectionAndDoc= async (req, res, next) => {
+
+    console.log("validateCollectionAndDoc")
+
+    const collectionName = req.params.collectionName
+    const _id = req.params._id
+
+    try{
+        const foundDoc = await databaseSchema.getDocumentsById(collectionName, _id)
+        console.info(foundDoc)
+
+        if(foundDoc)
+        {   next()}
+
+        else  {
+            console.log("No such   document with that Id present!")
+            res.send(null)
+        }
+        console.log("doc found ")
+
+    }
+
+    catch (err){
+        console.error("No such collection:", collectionName)
+        res.send(null)
+    }
+
+
+
+
+
+}
+
+const validateCollection= async (req, res, next) => {
+
+    console.log("validateCollection")
+    const collectionName = req.params.collectionName
+    try{
+        await databaseSchema.getDocuments(collectionName)
+        next()
+    }
+
+    catch (err){
+        console.log()
+        console.error("No such collection:", collectionName)
+        res.send(null)
+    }
+
+}
+
+
 /* GET All meteCollection Schemas  listing. */
 router.get('/', function(req, res, next) {
 
@@ -55,14 +108,15 @@ router.post('/:collectionName',(req,res,next)=>{
         .then((insertedDoc)=>res.send(insertedDoc))
         .catch(err =>{
             console.error({Error : JSON.stringify(err)})
-            res.send({error : "error in creation"})
+            res.status(403)
+            res.send(err)
 
         })
 })
 
 /* GET all documents from the given collection name  . */
 // queryFilter sends filter data to the client
-router.get('/:collectionName',  (req, res, next) =>{
+router.get('/:collectionName',  validateCollection, (req, res, next) =>{
     const collectionName = req.params.collectionName
 
     databaseSchema.getDocuments(collectionName)
@@ -76,7 +130,7 @@ router.get('/:collectionName',  (req, res, next) =>{
 
 
 /* GET document  from the given collection name by ID  . */
-router.get('/:collectionName/:_id', function(req, res, next) {
+router.get('/:collectionName/:_id',validateCollectionAndDoc,  function(req, res, next) {
     const collectionName = req.params.collectionName
     const _id = req.params._id
 
@@ -87,10 +141,12 @@ router.get('/:collectionName/:_id', function(req, res, next) {
 
 
 /* PUT document  from the given collection name by ID  . */
-router.put('/:collectionName/:_id', async function (req, res) {
+router.put('/:collectionName/:_id', validateCollectionAndDoc, async function (req, res) {
+    console.log("reached put collectionNAme ")
 
     const collectionName = req.params.collectionName
     const docIdToUpdate = parseInt(req.params._id)
+    console.log("asdfdsfsfsd")
     try{
         console.log("updateIfExists")
 
@@ -154,16 +210,21 @@ router.delete('/:collectionName', function(req, res) {
 });
 
 /* Delete document  from the given collection name by ID  . */
-router.delete('/:collectionName/:_id', function(req, res, next) {
+router.delete('/:collectionName/:_id', validateCollectionAndDoc, function(req, res, next) {
     const collectionName = req.params.collectionName
     const _id = req.params._id
 
     databaseSchema.deleteDocumentById(collectionName,_id)
-        .then(doc=>res.send(doc))
+        .then(doc=>res.send({status : "ok"}))
         .catch(err=>res.send({Error : JSON.stringify(err)}))
 });
 
 
+
+
+
 router.use('/:collectionName1/:_id1',mappingTableRouter)
+
+
 
 module.exports = router;

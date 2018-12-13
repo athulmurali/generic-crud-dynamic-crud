@@ -13,8 +13,7 @@ const getAllMapping =(collectionName1, collectionName2,_id1)=>
     mappingCollectionModel
     .mappingModel(collectionName1,collectionName2)
         .find({[collectionName1] : _id1}).
-        select({ [collectionName2]: 1, "_id": 0})
-        // .populate(collectionName2)
+        select({ [collectionName2]: 1, "_id": 0}).populate(collectionName2)
 
 
 //deletes all documents matching
