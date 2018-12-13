@@ -26,12 +26,20 @@ You can find the responses for each api
 https://documenter.getpostman.com/view/3505107/RzfmDm7C
 
 
-Also, I have got a permission to include id in json body. It is mongo ! 
-
-Will be posting the youtube video asap
 
 
 Note for graders : 
+
+_id is passed as part of input to make it easier. Mongo doesnt not have an autoincrement function for _id.
+Please refer the following piazza post : 
+
+https://piazza.com/class/jlpc7xkhjcm5d5?cid=954
+
+
+Also, I have already explained about how I built this in the following piazza answer(Contains logic and architecture)
+
+https://piazza.com/class/jlpc7xkhjcm5d5?cid=960
+
 Predicates are also done. Please find the middleware 'queryFilter' to see the predicate function
 
 "/api/movie/123/actor?id=234&__v=0"
@@ -45,5 +53,8 @@ If you wanna try,
 https://documenter.getpostman.com/view/3505107/RzfmDm7C
 
 4. Also, you can try downloading the postman requests from 
-
 https://www.getpostman.com/collections/66b5811bbf61f0372146
+
+
+Will be posting the youtube video asap
+
