@@ -36,11 +36,14 @@ Predicates are also done. Please find the middleware 'queryFilter' to see the pr
 
 "/api/movie/123/actor?id=234&__v=0"
 
-
 If you wanna try,
 
-First send a delete request to 
-
-https://generic-crud-mongoose.herokuapp.com/api/
-
+1. First send a delete request to  https://generic-crud-mongoose.herokuapp.com/api/
 (this cleans up the database and makes it test ready)
+2. Then try the sequence given in the req document. https://docs.google.com/document/d/1iTEPLCcyUdaOul0Ou3_oD1UwS5ecTSoTAHYuU76QTPY/edit
+3. Or refer to the tested results 
+https://documenter.getpostman.com/view/3505107/RzfmDm7C
+
+4. Also, you can try downloading the postman requests from 
+
+https://www.getpostman.com/collections/66b5811bbf61f0372146
