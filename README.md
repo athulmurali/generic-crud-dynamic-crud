@@ -31,3 +31,7 @@ Also, I have got a permission to include id in json body. It is mongo !
 Will be posting the youtube video asap
 
 
+Note for graders : 
+Predicates are also done. Please find the middleware 'queryFilter' to see the predicate function
+
+"/api/movie/123/actor?id=234&__v=0"
