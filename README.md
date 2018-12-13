@@ -35,3 +35,12 @@ Note for graders :
 Predicates are also done. Please find the middleware 'queryFilter' to see the predicate function
 
 "/api/movie/123/actor?id=234&__v=0"
+
+
+If you wanna try,
+
+First send a delete request to 
+
+https://generic-crud-mongoose.herokuapp.com/api/
+
+(this cleans up the database and makes it test ready)
