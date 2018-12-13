@@ -5,12 +5,8 @@ const databaseSchema = require("../Dao/Database")
 const mappingTableRouter = require("./mappingTableRouter")
 const getFieldTypeDict = require('../util/PseudoSchema').getFieldTypeDict
 const queryFilter= require("./middlewares/Filter").queryFilter;
-
-
 const metaCollectionModel = require('../data/MetaCollection').metaCollectionModel
 const metaCollectionDao= require('../Dao/MetaCollection')
-
-
 
 const validateCollectionAndDoc= async (req, res, next) => {
 
@@ -38,11 +34,6 @@ const validateCollectionAndDoc= async (req, res, next) => {
         console.error("No such collection:", collectionName)
         res.send(null)
     }
-
-
-
-
-
 }
 
 const validateCollection= async (req, res, next) => {

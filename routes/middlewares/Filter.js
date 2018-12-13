@@ -1,11 +1,15 @@
 
-const filterElement=( queryDict,valueDict)=>{
+const filterElement=( queryDict,valueDict )=>    {
     const defaultReturn = true;
+    console.log("value dict : ")
+    console.log(valueDict)
+    console.log("query dict")
+    console.log(queryDict)
 
     for (let i in Object.keys(queryDict))
     {
-        const queryKey =  Object.keys(queryDict)[i]
-        console.debug({[queryKey] : queryDict[queryKey]}, "====", {[queryKey] : valueDict[queryKey]},
+        const queryKey =  new String(Object.keys(queryDict)[i])
+        console.debug({[queryKey] : queryDict[queryKey]}, "===", {[queryKey] : valueDict[queryKey]},
             queryDict[queryKey] ==  valueDict[queryKey])
         if ( queryDict[queryKey] !=  valueDict[queryKey]){return false}
     }

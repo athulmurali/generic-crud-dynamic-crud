@@ -19,7 +19,6 @@ router.get('/:collectionName2', async function (req, res, next) {
         const collectionName2 = req.params.collectionName2
 
         const _id1 = req.params._id1
-        const _id2 = req.params._id2
 
         if (collectionName1== collectionName2)
 
@@ -39,8 +38,9 @@ router.get('/:collectionName2', async function (req, res, next) {
 
         const output =[]
         docs.forEach(doc=>output.push(doc[collectionName2]))
-        console.log(output)
-        req.modelArray =  docs
+        console.log("output**************")
+        req.modelArray =  output
+        console.log(req.modelArray)
         return next()
 
 
