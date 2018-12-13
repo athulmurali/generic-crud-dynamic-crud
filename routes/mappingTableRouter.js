@@ -1,3 +1,4 @@
+const queryFilter = require( "./middlewares/Filter").queryFilter
 
 const express = require('express');
 const router = express.Router({mergeParams : true});
@@ -34,10 +35,13 @@ router.get('/:collectionName2', async function (req, res, next) {
         // const docsList = await  databaseSchema.getDocumentsList(collectionName2,[1234])
 
         const docs = await  mappingTableDao.getAllMapping(collectionName1, collectionName2, _id1)
+
+
         const output =[]
         docs.forEach(doc=>output.push(doc[collectionName2]))
         console.log(output)
-        res.send(output)
+        req.modelArray =  docs
+        return next()
 
 
     }
@@ -50,7 +54,7 @@ router.get('/:collectionName2', async function (req, res, next) {
 
 
 
-});
+}, queryFilter);
 
 
 //
