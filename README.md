@@ -57,5 +57,8 @@ https://www.getpostman.com/collections/66b5811bbf61f0372146
 
 
 ### [Youtube](www.youtube.com) ### 
-- Will be posting the youtube video asap
+
+https://www.youtube.com/watch?v=S7dyi5N__tc&list=PLw0yPKqs07m18Ry81l-MSvR_MImwVs2NN
+
+Will be completed by 12am
 
