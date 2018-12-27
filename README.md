@@ -28,7 +28,7 @@ https://documenter.getpostman.com/view/3505107/RzfmDm7C
 
 
 
-Note for graders : 
+### Notes:
 
 _id is passed as part of input to make it easier. Mongo doesnt not have an autoincrement function for _id.
 Please refer the following piazza post : 
@@ -36,8 +36,7 @@ Please refer the following piazza post :
 https://piazza.com/class/jlpc7xkhjcm5d5?cid=954
 
 
-Also, I have already explained about how I built this in the following piazza answer(Contains logic and architecture)
-
+Arc
 https://piazza.com/class/jlpc7xkhjcm5d5?cid=960
 
 Predicates are also done. Please find the middleware 'queryFilter' to see the predicate function
@@ -59,6 +58,4 @@ https://www.getpostman.com/collections/66b5811bbf61f0372146
 ### [Youtube](www.youtube.com) ### 
 
 https://www.youtube.com/watch?v=S7dyi5N__tc&list=PLw0yPKqs07m18Ry81l-MSvR_MImwVs2NN
-
-Will be completed by 12am
 
